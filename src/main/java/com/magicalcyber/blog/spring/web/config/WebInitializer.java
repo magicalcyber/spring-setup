@@ -46,7 +46,7 @@ public class WebInitializer extends
 	@Override
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
-		logger.debug("onStartup");
+		logger.debug("==================== onStartup");
 		super.onStartup(servletContext);// MUST HAVE
 		servletContext.setInitParameter("defaultHtmlEscape", "true");
 	}
