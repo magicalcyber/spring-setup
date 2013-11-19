@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
-import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebInitializer extends
@@ -40,21 +39,8 @@ public class WebInitializer extends
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
 
-		// HiddenHttpMethodFilter will help you get around the problem, but you
-		// have to include a hidden field _method=PUT in your form. If you use
-		// the spring:form taglib this will be done automatically for you, but
-		// your example seems to use plain HTML.
-		//
-		// Reference: http://stackoverflow.com/a/13651928
-		HiddenHttpMethodFilter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();
-
-		// From Spring Framework Documents: HiddenHttpMethodFilter
-		// NOTE: This filter needs to run after multipart processing in case of
-		// a multipart POST request, due to its inherent need for checking a
-		// POST body parameter.So typically, put a Spring MultipartFilter before
-		// this HiddenHttpMethodFilter in your web.xml filter chain.
-
-		return new Filter[] { hiddenHttpMethodFilter, characterEncodingFilter };
+		return new Filter[] { characterEncodingFilter,
+				new HiddenHttpMethodFilter() };
 	}
 
 	@Override

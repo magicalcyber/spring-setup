@@ -1,15 +1,15 @@
 package com.magicalcyber.blog.spring.web.controller;
 
-import javax.validation.Valid;
+import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.magicalcyber.blog.spring.web.view.UploadForm;
 
@@ -26,17 +26,14 @@ public class UploadController {
 		return "upload";
 	}
 
-	@RequestMapping(value = "/upload", consumes = "multipart/form-data", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(
-			@Valid @ModelAttribute("uploadForm") final UploadForm form,
-			BindingResult binding) {
-		logger.debug("binding error: {}", binding.hasErrors());
-		logger.debug("---- file content type: {}", form.getFile().getContentType());
-		if (binding.hasErrors()) {
-			return "upload";
-		} else {
-			
+			@RequestParam(value = "file", required = true) MultipartFile file) {
+		if (file.getSize() > 0) {
 			return "upload-complete";
+		} else {
+			return "upload";
 		}
+
 	}
 }
